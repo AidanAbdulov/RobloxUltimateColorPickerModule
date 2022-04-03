@@ -44,7 +44,7 @@ local function updateColor(colorWheelClass)
 	
 	colorWheelClass.selectedColor = Color3.fromHSV(math.clamp(h, 0, 1), math.clamp(s, 0, 1), math.clamp(v, 0, 1))
 	colorWheelClass.brightColor = Color3.fromHSV(math.clamp(h, 0, 1), math.clamp(s, 0, 1),1)
-	self.ColorDisplay.ImageColor3 = self.selectedColor
+	colorWheelClass.ColorDisplay.ImageColor3 = colorWheelClass.selectedColor
 end
 
 local function shallowDictionaryCopy(dictToCopy)
