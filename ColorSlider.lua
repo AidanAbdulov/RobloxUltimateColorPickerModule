@@ -35,8 +35,8 @@ end
 
 local function updateColor(colorSliderClass)
 	local Lerp = (colorSliderClass.Slider.AbsolutePosition.Y - colorSliderClass.ColorSlider.AbsolutePosition.Y) / colorSliderClass.ColorSlider.AbsoluteSize.Y
-	colorSliderClass.readColor = colorSliderClass.topColor:lerp(colorSliderClass.botColor , Lerp)
-	colorSliderClass.ColorDisplay.ImageColor3 = colorSliderClass.readColor
+	colorSliderClass.selectedColor = colorSliderClass.topColor:lerp(colorSliderClass.botColor , Lerp)
+	colorSliderClass.ColorDisplay.ImageColor3 = colorSliderClass.selectedColor
 end
 
 -- CONSTRUCTOR -- 
@@ -92,7 +92,6 @@ function ColourSliderAPI.new(Arguments)
 
   ColorSliderClass.ColorDisplay.Name = "ColorDisplay"
 	ColorSliderClass.ColorDisplay.Parent = ColorSliderGuiContainer
-	ColorSliderClass.ColorDisplay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	ColorSliderClass.ColorDisplay.BackgroundTransparency = 1.000
 	ColorSliderClass.ColorDisplay.BorderSizePixel = 0
 	ColorSliderClass.ColorDisplay.Position = UDim2.new(0.47527355, 0, 0.203556925, 0)
@@ -106,7 +105,8 @@ function ColourSliderAPI.new(Arguments)
   ColorSliderClass.isOn = false
   ColorSliderClass.topColor = ColorSliderClass.topColor or Color3.fromHSV(0, 0, 1)
   ColorSliderClass.botColor = ColorSliderClass.botColor or Color3.fromHSV(0, 0, 0)
-
+	ColorSliderClass.ColorDisplay.BackgroundColor3 = ColorSliderClass.topColor
+	
   ColorSliderClass.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, ColorSliderClass.topColor), ColorSequenceKeypoint.new(1.00, ColorSliderClass.botColor)}
 	ColorSliderClass.UIGradient.Rotation = 90
 	ColorSliderClass.UIGradient.Parent = ColorSliderClass.ColorSlider
@@ -162,7 +162,7 @@ function ColourSliderAPI:turnOff()
 end
 
 function ColourSliderAPI:readColor()
-	return self.readColor or Color3.fromHSV(0, 0, 1)
+	return self.selectedColor or self.topColor
 end
 
 return ColourSliderAPI

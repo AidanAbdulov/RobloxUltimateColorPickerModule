@@ -42,8 +42,9 @@ local function updateColor(colorWheelClass)
 	local s = colorWheelClass.PickedColorPos.Magnitude / Radius -- distance from center 0 - at center 1 - at radius
 	local v = math.abs((colorWheelClass.Slider.AbsolutePosition.Y - colorWheelClass.DarknessPicker.AbsolutePosition.Y) / colorWheelClass.DarknessPicker.AbsoluteSize.Y - 1)
 	
-	colorWheelClass.readColor = Color3.fromHSV(math.clamp(h, 0, 1), math.clamp(s, 0, 1), math.clamp(v, 0, 1))
+	colorWheelClass.selectedColor = Color3.fromHSV(math.clamp(h, 0, 1), math.clamp(s, 0, 1), math.clamp(v, 0, 1))
 	colorWheelClass.brightColor = Color3.fromHSV(math.clamp(h, 0, 1), math.clamp(s, 0, 1),1)
+	self.ColorDisplay.ImageColor3 = self.selectedColor
 end
 
 local function shallowDictionaryCopy(dictToCopy)
@@ -161,7 +162,7 @@ function ColorWheelAPI.new(Arguments)
 	ColorWheelClass.Picker.Size = UDim2.new(0.0900257826, 0, 0.0900257975, 0)
 	ColorWheelClass.Picker.Image = "http://www.roblox.com/asset/?id=3678860011"
 	
-	ColorWheelClass.readColor = Color3.fromHSV(0, 0, 1)
+	ColorWheelClass.selectedColor = Color3.fromHSV(0, 0, 1)
 	ColorWheelAPI.isOn = false
 	
 	return ColorWheelClass
@@ -201,7 +202,6 @@ function ColorWheelAPI:turnOn()
 		self.Picker.Position = UDim2.new(pickerPosition.X , 0 , pickerPosition.Y , 0)
 		
 		updateColor(self)
-		self.ColorDisplay.ImageColor3 = self.readColor
 		self.DarknessPicker.UIGradient.Color = ColorSequence.new{
 			ColorSequenceKeypoint.new(0, self.brightColor), 
 			ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))
@@ -216,7 +216,6 @@ function ColorWheelAPI:turnOn()
 		)	
 		
 		updateColor(self)
-		self.ColorDisplay.ImageColor3 = self.readColor
 	end)
 end
 
@@ -234,7 +233,7 @@ function ColorWheelAPI:turnOff()
 end
 
 function ColorWheelAPI:readColor()
-	return self.readColor or Color3.fromRGB(255, 255, 255)
+	return self.selectedColor or Color3.fromRGB(255, 255, 255)
 end
 
 return ColorWheelAPI
